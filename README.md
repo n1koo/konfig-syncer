@@ -8,6 +8,7 @@ Sync `ConfigMap`s and `Secret`s between namespaces.
 
 - `-kubeconfig` to point to kubeconfig
 - `-master` to override master address in kubeconfig
+- `-human-readable-logs`for disabling json logging output
 - `-debug` flag to get more verbose logging
 
 ### Add

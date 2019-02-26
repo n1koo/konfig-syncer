@@ -12,15 +12,18 @@ import (
 )
 
 var (
-	masterURL  string
-	kubeconfig string
-	debug      bool
+	masterURL         string
+	kubeconfig        string
+	debug             bool
+	humanReadableLogs bool
 )
 
 func init() {
 	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
 	flag.StringVar(&masterURL, "master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
 	flag.BoolVar(&debug, "debug", false, "Enable debug mode")
+	flag.BoolVar(&humanReadableLogs, "human-readable-logs", false, "Log in human readable mode rather than default json")
+	flag.Set("logtostderr", "true")
 }
 
 func main() {
@@ -28,6 +31,9 @@ func main() {
 
 	if debug {
 		log.SetLevel(log.DebugLevel)
+	}
+	if !humanReadableLogs {
+		log.SetFormatter(&log.JSONFormatter{})
 	}
 
 	// set up signals so we handle the first shutdown signal gracefully
