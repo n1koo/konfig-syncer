@@ -30,6 +30,10 @@ If `Namespace`s labels get updated we sync what objects still belong to it (eg. 
 
 If the origin object is deleted the copied objects will also be deleted.
 
+## Deployment
+
+You can find example k8s and helm templates in the `deploy` dir
+
 ## TODO
 
 - tests :(
