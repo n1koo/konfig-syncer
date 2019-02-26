@@ -19,7 +19,7 @@ spec:
       serviceAccountName: konfig-syncer
       containers:
         - name: konfig-syncer
-          image: "fixme"
+          image: n1koo/konfig-syncer:latest
           resources:
             requests:
               memory: "64Mi"
