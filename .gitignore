@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-konfig-syncer
+/konfig-syncer
 
 # Test binary, built with `go test -c`
 *.test

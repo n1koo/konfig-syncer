@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: "1.0"
+description: Chart for konfig-syncer that sync configmaps/secrets between namespaces
+name: konfig-syncer
+version: 0.0.1

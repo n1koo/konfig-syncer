@@ -1,0 +1,16 @@
+image:
+  repository: n1koo/konfig-syncer
+  tag: latest
+  pullPolicy: "Always"
+
+resources:
+  limits: 
+    cpu: "1"
+    memory: 64Mi
+  requests:
+    cpu: "10m"
+    memory: 16Mi
+
+securityContext:
+  fsGroup: 65534
+  runAsUser: 65534

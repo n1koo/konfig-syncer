@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: konfig-syncer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: konfig-syncer
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: konfig-syncer
+      release: {{ .Release.Name | quote }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: konfig-syncer
+        release: {{ .Release.Name | quote }}
+    spec:
+      serviceAccountName: konfig-syncer
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.dnsConfig }}
+      dnsConfig:
+{{ toYaml .Values.dnsConfig | indent 8 }}
+      {{- end }}    
+      {{- if .Values.securityContext }}
+      securityContext:
+{{ toYaml .Values.securityContext | indent 8 }}
+      {{- end }}
+      containers:
+      - name: konfig-syncer
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+        {{- if .Values.resources }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        {{- end }}
