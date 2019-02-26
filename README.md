@@ -2,6 +2,9 @@
 
 Sync `ConfigMap`s and `Secret`s between namespaces.
 
+Builds can be at [Docker Hub](https://cloud.docker.com/repository/docker/n1koo/konfig-syncer/)
+Docker image can be fetched with `docker pull n1koo/konfig-syncer`
+
 ## Usage
 
 `konfig-syncer` uses `konfig-syncer` annotation for figuring out which objects should be synced and to which destionation `Namespace`s.
