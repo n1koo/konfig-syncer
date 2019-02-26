@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  config: map
+kind: ConfigMap
+metadata:
+  annotations:
+    konfig-syncer: ""
+  name: common-configmap

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: konfig-syncer
+  labels:
+    app: konfig-syncer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: konfig-syncer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: konfig-syncer
+    spec:
+      serviceAccountName: konfig-syncer
+      containers:
+        - name: konfig-syncer
+          image: "fixme"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
