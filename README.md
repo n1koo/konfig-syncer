@@ -9,6 +9,12 @@ Docker image can be fetched with `docker pull n1koo/konfig-syncer`
 
 `konfig-syncer` uses `konfig-syncer` annotation for figuring out which objects should be synced and to which destionation `Namespace`s.
 
+tl;dr
+- `konfig-syncer: ""` annotation on object -> sync to all namespaces
+- `konfig-syncer: "foo=bar` annotation on object -> sync to namespaces that have `foo: bar` label
+
+### Params for running:
+
 - `-kubeconfig` to point to kubeconfig
 - `-master` to override master address in kubeconfig
 - `-human-readable-logs`for disabling json logging output
