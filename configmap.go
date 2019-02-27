@@ -31,10 +31,9 @@ func (c *Controller) syncConfigMap(key string) error {
 	sourceConfigMap, err := c.configMapsLister.ConfigMaps(namespace).Get(name)
 	if err != nil {
 		if errors.IsNotFound(err) {
-			if !errors.IsNotFound(err) {
-				return err
-			}
+          return nil
 		}
+		return err
 	}
 
 	namespaces, err := c.namespacesForLabel(sourceConfigMap.Annotations[syncAnnotation])

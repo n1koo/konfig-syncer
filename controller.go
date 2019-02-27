@@ -74,9 +74,9 @@ func NewController(
 			nanno, newHasAnno := news.Annotations[syncAnnotation]
 			oanno, oldHasAnno := olds.Annotations[syncAnnotation]
 
-			if newHasAnno && !oldHasAnno {
-				log.Debug("Secret updated to have sync annotation")
-				controller.enqueueSecret(new)
+			if newHasAnno && (!oldHasAnno || !reflect.DeepEqual(news.Data, olds.Data)) {
+				log.Debug("Secret updated to have sync annotation or data changed")
+				controller.enqueueSecret(news)
 			} else if !newHasAnno && oldHasAnno {
 				log.Debug("Sync annotation was removed from Secret")
 				controller.deletedSecretIndexer.Add(olds)
@@ -104,7 +104,7 @@ func NewController(
 			s := new.(*corev1.ConfigMap)
 			if _, ok := s.Annotations[syncAnnotation]; ok {
 				log.Debug("ConfigMap added to workqueue")
-				controller.enqueueConfigMap(new)
+				controller.enqueueConfigMap(s)
 			}
 		},
 		UpdateFunc: func(old, new interface{}) {
@@ -114,19 +114,16 @@ func NewController(
 			nanno, newHasAnno := news.Annotations[syncAnnotation]
 			oanno, oldHasAnno := olds.Annotations[syncAnnotation]
 
-			if newHasAnno && !oldHasAnno {
-				log.Debug("ConfigMap updated to have sync annotation")
-				controller.enqueueSecret(new)
+			if newHasAnno && (!oldHasAnno || !reflect.DeepEqual(news.Data, olds.Data)) {
+				log.Debug("ConfigMap updated to have sync annotation or data changed")
+				controller.enqueueConfigMap(news)
 			} else if !newHasAnno && oldHasAnno {
 				log.Debug("Sync annotation was removed from ConfigMap")
 				controller.deletedConfigMapIndexer.Add(olds)
+			} else if !reflect.DeepEqual(nanno, oanno) {
+				log.Debug("Sync annotation was was changed on ConfigMap")
+				controller.deletedConfigMapIndexer.Add(olds)
 				controller.enqueueConfigMap(news)
-			} else {
-				if !reflect.DeepEqual(nanno, oanno) {
-					log.Debug("Sync annotation was was changed on ConfigMap")
-					controller.deletedConfigMapIndexer.Add(olds)
-					controller.enqueueConfigMap(news)
-				}
 			}
 		},
 		DeleteFunc: func(obj interface{}) {

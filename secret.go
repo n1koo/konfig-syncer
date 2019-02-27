@@ -31,10 +31,9 @@ func (c *Controller) syncSecret(key string) error {
 	sourceSecret, err := c.secretsLister.Secrets(namespace).Get(name)
 	if err != nil {
 		if errors.IsNotFound(err) {
-			if !errors.IsNotFound(err) {
-				return err
-			}
+			return nil
 		}
+		return err
 	}
 
 	namespaces, err := c.namespacesForLabel(sourceSecret.Annotations[syncAnnotation])
